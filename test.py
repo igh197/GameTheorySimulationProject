@@ -4,22 +4,19 @@ import scipy.stats
 import numpy as np
 import matplotlib.pyplot as plt
 
-N = 70  ### 스텝 횟수
+N = 70
+nl = [70]
 F = 20
+fl = [20]
 B = 10
-Nx = np.random.random(N)  ### [0,1] 사이에서 균등 분포를 갖는 무작위 변수 N개 생성
+bl = [10]
+Nx = np.random.random(N)
 Ny = np.random.random(N)
 
-### X의 초기값 x_0 = 0으로 정의하고 수열에 포함
-
-
-Fx = np.random.random(F)  ### [0,1] 사이에서 균등 분포를 갖는 무작위 변수 N개 생성
+Fx = np.random.random(F)
 Fy = np.random.random(F)
 
-### X의 초기값 x_0 = 0으로 정의하고 수열에 포함
-
-
-Bx = np.random.random(B)  ### [0,1] 사이에서 균등 분포를 갖는 무작위 변수 N개 생성
+Bx = np.random.random(B)
 By = np.random.random(B)
 
 
@@ -94,21 +91,35 @@ for i in range(0, 70):
             if norm(Nx[i], Ny[i], Bx[k], By[k]) <= 0.05:
                 Bx = np.delete(Bx, k)
                 By = np.delete(By, k)
-
+                Nx = np.append(Nx, random.randrange(0, 1))
+                Ny = np.append(Ny, random.randrange(0, 1))
+                B -= 1
+                N += 1
+                bl.append(B)
+                nl.append(N)
             elif norm(Nx[i], Ny[i], Fx[j], Fy[j]) <= 0.05:
                 Nx = np.append(Nx, random.randrange(0, 1))
                 Ny = np.append(Ny, random.randrange(0, 1))
-
+                Fx = np.append(Fx, random.randrange(0, 1))
+                Fy = np.append(Fy, random.randrange(0, 1))
+                N += 1
+                nl.append(N)
+                F += 1
+                fl.append(F)
             elif norm(Fx[j], Fy[j], Bx[k], By[k]) <= 0.05:
                 Fx = np.delete(Fx, k)
                 Fy = np.delete(Fy, k)
+                Bx = np.append(Bx, random.randrange(0, 1))
+                By = np.append(By, random.randrange(0, 1))
+                F -= 1
+                fl.append(F)
+                B += 1
+                bl.append(B)
+plt.plot(nl, marker='o', markersize=3, lw=1)
+plt.plot(fl, marker='o', markersize=3, lw=1)
+plt.plot(bl, marker='o', markersize=3, lw=1)
 
-plt.plot(Nx, Ny, marker='o', markersize=3, lw=1)
-
-plt.plot(Fx,Fy, marker='o', markersize=3, lw=1)
-
-plt.plot(Bx, By, marker='o', markersize=3, lw=1)
-
-plt.xlabel('x_n')
-plt.ylabel('y_n')
-plt.show()  ### 결과를 그래프로 출력
+print(nl)
+print(fl)
+print(bl)
+plt.show()
